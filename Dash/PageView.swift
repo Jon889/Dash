@@ -86,10 +86,10 @@ class PageView: View {
 	}
 	
 	required convenience init(from dictionary: DictionaryBox<Keys>) throws {
-		let pagesDicts: [[String: Any]] = try dictionary.get(.pages)
-		let timeOnEachPage: TimeInterval = try dictionary.get(.timeOnEachPage)
-		let animationDuration: TimeInterval = try dictionary.get(.animationDuration)
-		let pages = pagesDicts.compactMap({ viewFrom(dictionary: $0) })
+		let pagesDicts: [[String: Any]] = try dictionary(.pages)
+		let timeOnEachPage: TimeInterval = try dictionary(.timeOnEachPage)
+		let animationDuration: TimeInterval = try dictionary(.animationDuration)
+		let pages = try pagesDicts.map { try viewFrom(dictionary: $0) }
 		self.init(pages: pages, timeOnEachPage: timeOnEachPage, animationDuration: animationDuration)
 	}
     

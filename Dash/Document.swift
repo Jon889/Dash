@@ -36,9 +36,9 @@ class ColorView: View, Encodable {
     }
 	
 	required convenience init(from dictionary: DictionaryBox<Keys>) throws {
-		let colorString: String = ""//dictionary(.color)
+		let colorString: String = try dictionary(.color)
 		guard let color = NSColor.fromHexString(hex: colorString, alpha: 1) else {
-			throw MissingKeyError()
+			throw InvalidValueError(key: "color", message: "Unable to create color from string \(colorString)")
 		}
 		self.init(color: color)
 	}
@@ -46,28 +46,24 @@ class ColorView: View, Encodable {
 	var isEditing: Bool = false
 }
 
-func viewFrom(dictionary: [String: Any]?) -> SubView? {
-    guard let dictionary = dictionary,
-        let type = dictionary["type"] as? String else { return nil }
-    switch type {
-    case SplitView.type:
-		return SplitView(from: dictionary)
-    case PageView.type:
-		return PageView(from: dictionary)
-    case WebPageView.type:
-		return WebPageView(from: dictionary)
-    case ColorView.type:
-       return ColorView(from: dictionary)
-    default:
-        return nil
-    }
-    
+func viewFrom(dictionary: [String: Any]) throws -> SubView {
+    guard let type = dictionary["type"] as? String else {
+		throw MissingKeyError(key: "type")
+	}
+	let types: [SubView.Type] = [SplitView.self, PageView.self, WebPageView.self, ColorView.self]
+	for viewType in types {
+		if type == viewType.type {
+			return try viewType.init(from: dictionary)
+		}
+	}
+	throw InvalidValueError(key: "type", message: "Couldn't create view from type \(type)")
 }
 
 protocol DictionaryProvider {
 	var dictionary: [String: Any] { get }
 }
 
+@dynamicCallable
 class DictionaryBox<Keys: RawRepresentable>: DictionaryProvider, ExpressibleByDictionaryLiteral where Keys.RawValue == String {
 	
 	let dictionary: [String : Any]
@@ -79,11 +75,40 @@ class DictionaryBox<Keys: RawRepresentable>: DictionaryProvider, ExpressibleByDi
 		self.dictionary = dictionary
 	}
 	
-	func get<T>(_ args: Keys) throws -> T {
-		guard let value = dictionary[args.rawValue] as? T else {
-			throw MissingKeyError()
+	func get<T>(_ key: Keys) throws -> T {
+		guard let unTypedValue = dictionary[key.rawValue] else {
+			throw MissingKeyError(key: key.rawValue)
+		}
+		guard let value = unTypedValue as? T else {
+			throw ValueIncorrectTypeError(key: key.rawValue, expectedType: String(describing: T.self), actualType: String(describing: type(of: unTypedValue)))
 		}
 		return value
+	}
+	
+	
+	// Can't use generics because https://bugs.swift.org/browse/SR-10313
+	func dynamicallyCall(withArguments args: [Keys]) throws -> String {
+		return try get(args[0])
+	}
+	
+	func dynamicallyCall(withArguments args: [Keys]) throws -> CGFloat {
+		return try get(args[0])
+	}
+	
+	func dynamicallyCall(withArguments args: [Keys]) throws -> Bool {
+		return try get(args[0])
+	}
+	
+	func dynamicallyCall(withArguments args: [Keys]) throws -> [String: Any] {
+		return try get(args[0])
+	}
+	
+	func dynamicallyCall(withArguments args: [Keys]) throws -> [[String: Any]] {
+		return try get(args[0])
+	}
+	
+	func dynamicallyCall(withArguments args: [Keys]) throws -> TimeInterval {
+		return try get(args[0])
 	}
 }
 
@@ -93,7 +118,7 @@ typealias View = NSView & ViewType
 protocol SubViewType: AnyObject {
 	var dictionary: [String: Any] { get }
 	var isEditing: Bool { get set }
-	init?(from dictionary: [String: Any])
+	init(from dictionary: [String: Any]) throws
 	static var type: String { get }
 }
 protocol ViewType: SubViewType {
@@ -102,7 +127,20 @@ protocol ViewType: SubViewType {
 	init(from dictionary: DictionaryBox<K>) throws
 }
 
-struct MissingKeyError: Error {}
+struct MissingKeyError: Error {
+	let key: String
+}
+
+struct ValueIncorrectTypeError: Error {
+	let key: String
+	let expectedType: String
+	let actualType: String
+}
+
+struct InvalidValueError: Error {
+	let key: String
+	let message: String
+}
 
 extension ViewType {
 	var dictionary: [String: Any] {
@@ -110,8 +148,8 @@ extension ViewType {
 		dictionary["type"] = Self.type
 		return dictionary
 	}
-	init?(from dictionary: [String: Any]) {
-		try? self.init(from: DictionaryBox<K>(dictionary: dictionary))
+	init(from dictionary: [String: Any]) throws {
+		try self.init(from: DictionaryBox<K>(dictionary: dictionary))
 	}
 }
 class Document: NSDocument {
@@ -142,8 +180,9 @@ class Document: NSDocument {
     
     override func read(from fileWrapper: FileWrapper, ofType typeName: String) throws {
         let fileWrapper = DashFileWrapper(fileWrapper)
-        let dict = try JSONSerialization.jsonObject(with: fileWrapper.contentsJSON, options: []) as? [String : Any]
-        contents = viewFrom(dictionary: dict)
+		if let dict = try JSONSerialization.jsonObject(with: fileWrapper.contentsJSON, options: []) as? [String : Any] {
+			contents = try viewFrom(dictionary: dict)
+		}
         self.fileWrapper = fileWrapper
     }
 

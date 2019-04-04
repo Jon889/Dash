@@ -38,15 +38,11 @@ class SplitView: View {
 		case isVertical, left, right, splitPosition
 	}
 	required convenience init(from dictionary: DictionaryBox<Keys>) throws {
-		let isVertical: Bool = try dictionary.get(.isVertical)
-		let splitPosition: CGFloat =  (try? dictionary.get(.splitPosition)) ?? 0.5
-		guard let left = viewFrom(dictionary: try dictionary.get(.left)),
-			let right = viewFrom(dictionary: try dictionary.get(.left)) else {
-				throw MissingKeyError()
-		}
+		let isVertical: Bool = try dictionary(.isVertical)
+		let splitPosition: CGFloat =  (try? dictionary(.splitPosition)) ?? 0.5
+		let left = try viewFrom(dictionary: try dictionary(.left))
+		let right = try viewFrom(dictionary: try dictionary(.left))
 		self.init(isVertical: isVertical, left: left, right: right, splitPosition: splitPosition)
-		
-		
 	}
 	
     required init?(coder decoder: NSCoder) {

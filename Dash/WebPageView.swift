@@ -57,11 +57,11 @@ class WebPageView: View {
     }
 	
 	required convenience init(from dictionary: DictionaryBox<Keys>) throws {
-		let urlStr: String = try dictionary.get(.url)
+		let urlStr: String = try dictionary(.url)
 		guard let url = URL(string: urlStr) else {
-				throw MissingKeyError()
+			throw InvalidValueError(key: "url", message: "Unable to create url from \(urlStr)")
 		}
-		let zoom: CGFloat = (try? dictionary.get(.zoom)) ?? 1
+		let zoom: CGFloat = (try? dictionary(.zoom)) ?? 1
 		self.init(url: url, zoom: zoom)
 	}
 	enum Keys: String {

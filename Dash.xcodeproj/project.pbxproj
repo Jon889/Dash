@@ -166,6 +166,7 @@
 				TargetAttributes = {
 					AB1715E3222DDD51004F4068 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						SystemCapabilities = {
 							com.apple.HardenedRuntime = {
 								enabled = 1;
@@ -177,6 +178,7 @@
 					};
 					AB1715F8222DDD54004F4068 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						TestTargetID = AB1715E3222DDD51004F4068;
 					};
 				};
@@ -406,7 +408,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = co.uk.jonathanb.Dash;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -427,7 +429,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = co.uk.jonathanb.Dash;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -447,7 +449,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = co.uk.jonathanb.DashTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Dash.app/Contents/MacOS/Dash";
 			};
 			name = Debug;
@@ -468,7 +470,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = co.uk.jonathanb.DashTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Dash.app/Contents/MacOS/Dash";
 			};
 			name = Release;
