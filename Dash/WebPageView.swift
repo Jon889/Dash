@@ -10,6 +10,10 @@ import Cocoa
 import WebKit
 
 class WebPageView: View {
+	required convenience init() {
+		self.init(url: URL(string: "http://google.com")!, zoom: 1)
+	}
+	
 	static var type: String = "WebView"
 	
     static let processPool = WKProcessPool()
@@ -18,6 +22,8 @@ class WebPageView: View {
     
     let webView: WKWebView
     let button: NSButton
+	
+	
 	public init(url: URL, zoom: CGFloat) {
         self.url = url.absoluteString
         let config = WKWebViewConfiguration()

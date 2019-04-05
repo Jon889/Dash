@@ -19,6 +19,7 @@
 		ABDD1BDD22392F550029A56D /* DashFileWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDD1BDC22392F550029A56D /* DashFileWrapper.swift */; };
 		ABDD1BDF223936DF0029A56D /* DashWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDD1BDE223936DF0029A56D /* DashWindowController.swift */; };
 		ABDD1BE122394BD10029A56D /* WebPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDD1BE022394BD10029A56D /* WebPageView.swift */; };
+		ABFBE2392256D39F000A9CAA /* PlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFBE2382256D39F000A9CAA /* PlaceholderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		ABDD1BDC22392F550029A56D /* DashFileWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashFileWrapper.swift; sourceTree = "<group>"; };
 		ABDD1BDE223936DF0029A56D /* DashWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashWindowController.swift; sourceTree = "<group>"; };
 		ABDD1BE022394BD10029A56D /* WebPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebPageView.swift; sourceTree = "<group>"; };
+		ABFBE2382256D39F000A9CAA /* PlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 				ABDD1BE022394BD10029A56D /* WebPageView.swift */,
 				ABA414E422427FD1005C8493 /* PageView.swift */,
 				ABA414E62243CF55005C8493 /* SplitView.swift */,
+				ABFBE2382256D39F000A9CAA /* PlaceholderView.swift */,
 				ABDD1BDE223936DF0029A56D /* DashWindowController.swift */,
 				ABDD1BDC22392F550029A56D /* DashFileWrapper.swift */,
 				AB1715EB222DDD52004F4068 /* Document.xib */,
@@ -234,6 +237,7 @@
 				ABDD1BDF223936DF0029A56D /* DashWindowController.swift in Sources */,
 				ABDD1BE122394BD10029A56D /* WebPageView.swift in Sources */,
 				AB1715E8222DDD52004F4068 /* AppDelegate.swift in Sources */,
+				ABFBE2392256D39F000A9CAA /* PlaceholderView.swift in Sources */,
 				ABDD1BDD22392F550029A56D /* DashFileWrapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

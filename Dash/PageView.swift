@@ -9,6 +9,10 @@
 import Cocoa
 
 class PageView: View {
+	required convenience init() {
+		self.init(pages: [], timeOnEachPage: 1, animationDuration: 1)
+	}
+	
 	static var type: String = "PageView"
 	
 
@@ -44,7 +48,6 @@ class PageView: View {
         documentView.rightAnchor.constrain(equalTo: lastAnchor)
         sv.hasVerticalScroller = false
         sv.hasHorizontalScroller = true
-//        sv.scrollerStyle = .legacy
         self.timeOnEachPage = timeOnEachPage
         self.animationDuration = animationDuration
         super.init(frame: .zero)
@@ -58,6 +61,7 @@ class PageView: View {
     
     func startAutoScroll(timeOnEachPage: TimeInterval, animationDuration: TimeInterval) {
         timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(timeOnEachPage + animationDuration), repeats: true) { _ in
+			if self.pageCount == 0 { return }
             let nextPage = (self.currentPage + 1) % self.pageCount
             self.moveToPage(at: nextPage, animationDuration: animationDuration)
         }

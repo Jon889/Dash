@@ -9,6 +9,10 @@
 import Cocoa
 
 class SplitView: View, NSSplitViewDelegate {
+	required convenience init() {
+		self.init(isVertical: false, left: PlaceholderView(), right: PlaceholderView(), splitPosition: 0.5)
+	}
+	
 	
 	static var type: String = "SplitView"
     private var isVertical: Bool

@@ -13,6 +13,10 @@ class ColorView: View, Encodable {
 	static var type: String = "Color"
 	
     var color: NSColor
+	
+	required convenience init() {
+		self.init(color: .red)
+	}
     
     init(color: NSColor) {
         self.color = color
@@ -45,13 +49,13 @@ class ColorView: View, Encodable {
 	
 	var isEditing: Bool = false
 }
-
+let viewTypes: [SubView.Type] = [SplitView.self, PageView.self, WebPageView.self, ColorView.self, PlaceholderView.self]
 func viewFrom(dictionary: [String: Any]) throws -> SubView {
     guard let type = dictionary["type"] as? String else {
 		throw MissingKeyError(key: "type")
 	}
-	let types: [SubView.Type] = [SplitView.self, PageView.self, WebPageView.self, ColorView.self]
-	for viewType in types {
+	
+	for viewType in viewTypes {
 		if type == viewType.type {
 			return try viewType.init(from: dictionary)
 		}
@@ -119,6 +123,7 @@ protocol SubViewType: AnyObject {
 	var dictionary: [String: Any] { get }
 	var isEditing: Bool { get set }
 	init(from dictionary: [String: Any]) throws
+	init()
 	static var type: String { get }
 }
 protocol ViewType: SubViewType {
@@ -145,7 +150,9 @@ struct InvalidValueError: Error {
 extension ViewType {
 	var dictionary: [String: Any] {
 		var dictionary = self.dictionary.dictionary
-		dictionary["type"] = Self.type
+		if dictionary["type"] == nil {
+			dictionary["type"] = Self.type
+		}
 		return dictionary
 	}
 	init(from dictionary: [String: Any]) throws {
@@ -211,7 +218,10 @@ class Document: NSDocument {
     override func windowControllerDidLoadNib(_ windowController: NSWindowController) {
         if let contents = contents {
             windowController.window?.contentView?.addContainedSubview(contents)
-        }
+		} else {
+			contents = try! PlaceholderView.init(from: [:])
+			windowController.window?.contentView?.addContainedSubview(contents!)
+		}
         windowController.window?.delegate = self
     }
 }
