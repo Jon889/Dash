@@ -45,7 +45,10 @@ class WebPageView: View {
         zoomLevel -= 0.2
         needsLayout = true
     }
-    
+	@objc
+	func reloadWebview(_ sender: Any) {
+		webView.reload()
+	}
     override func layout() {
         super.layout()
         webView.frame.size = CGSize(width: frame.width * (1/zoomLevel), height: frame.height * (1/zoomLevel))

@@ -25,14 +25,14 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Dash/Document.swift"
-            timestampString = "576112651.377359"
+            filePath = "Dash/WebPageView.swift"
+            timestampString = "576115083.612257"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
-            landmarkName = "windowNibName"
-            landmarkType = "24">
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "reloadWebview(_:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

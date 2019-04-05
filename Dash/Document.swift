@@ -158,7 +158,18 @@ class Document: NSDocument {
 		menuItem.state = menuItem.state == .off ? .on : .off
 		contents?.isEditing = menuItem.state == .on
 	}
-    var contents: SubView?
+	@objc
+	func reloadWebviews(_ sender: Any) {
+		contents?.performActionOnSubviews(#selector(WebPageView.reloadWebview(_:)), sender: sender)
+	}
+	
+	var contents: SubView? {
+		didSet {
+			let superview = oldValue?.superview
+			oldValue?.removeFromSuperview()
+			contents.map { superview?.addContainedSubview($0) }
+		}
+	}
     override init() {
         super.init()
         // Add your subclass-specific initialization here.
@@ -339,5 +350,16 @@ extension Dictionary where Key: RawRepresentable, Key.RawValue: Hashable  {
 extension Dictionary where Key == String {
 	subscript <T: RawRepresentable>(_ key: T) -> Value? where T.RawValue == String {
 		return self[key.rawValue]
+	}
+}
+
+extension NSView {
+	func performActionOnSubviews(_ action: Selector, sender: Any) {
+		for view in subviews {
+			if view.responds(to: action) {
+				view.perform(action, with: sender)
+			}
+			view.performActionOnSubviews(action, sender: sender)
+		}
 	}
 }
