@@ -13,8 +13,8 @@ class WebPageView: View {
 
 	static var type: String = "WebView"
 	
-	@IBOutlet var webView: WKWebView!
-	@IBOutlet var editToolbar: NSView!
+	let webView: WKWebView!
+	private static let processPool = WKProcessPool()
 	
 	@objc dynamic
 	private var zoomLevel: CGFloat = 1 {
@@ -23,7 +23,6 @@ class WebPageView: View {
 			undoManager?.registerUndo(withTarget: self) { $0.zoomLevel = oldValue }
 		}
 	}
-	private static let processPool = WKProcessPool()
 	@objc dynamic
 	private var url: URL {
 		didSet {
@@ -38,27 +37,15 @@ class WebPageView: View {
 	
 	public init(url: URL, zoom: CGFloat) {
 		self.url = url
-		super.init(frame: .zero)
-		if let rootView = NSNib.loadRootViewFromNib(for: self) {
-			addContainedSubview(rootView)
-		}
-		
 		let config = WKWebViewConfiguration()
 		config.processPool = WebPageView.processPool
-		
+		self.webView = WKWebView.init(frame: .zero, configuration: config)
+		super.init(frame: .zero)
+		addContainedSubview(webView)
         webView.load(URLRequest(url: url))
 		zoomLevel = zoom
-		needsLayout = true
     }
 	
-	@IBAction
-	private func didTapZoomIn(_ sender: Any) {
-		zoomLevel += 0.2
-	}
-	@IBAction
-	private func didTapZoomOut(_ sender: Any) {
-        zoomLevel -= 0.2
-    }
 	@objc
 	func reloadWebview(_ sender: Any) {
 		webView.reload()
