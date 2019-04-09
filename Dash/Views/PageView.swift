@@ -116,12 +116,6 @@ class PageView: View {
 		return [ .pages: pages.map { $0.dictionary }, .timeOnEachPage: timeOnEachPage, .animationDuration: animationDuration ]
     }
 	
-	var isEditing: Bool = false {
-		didSet {
-			pages.forEach { $0.isEditing = isEditing }
-		}
-	}
-	
 	var children: [SubView] {
 		return pages
 	}

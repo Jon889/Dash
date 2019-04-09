@@ -29,12 +29,13 @@ typealias View = NSView & ViewType
 
 protocol SubViewType: AnyObject {
 	var dictionary: [String: Any] { get }
-	var isEditing: Bool { get set }
 	init(from dictionary: [String: Any]) throws
 	init()
 	static var type: String { get }
 	var children: [SubView] { get }
 	var inspectorView: NSView? { get }
+	func didSelectViewInInspector()
+	func didDeselectViewInInspector()
 }
 
 extension SubViewType {
@@ -44,6 +45,8 @@ extension SubViewType {
 	var inspectorView: NSView? {
 		return nil
 	}
+	func didSelectViewInInspector() {}
+	func didDeselectViewInInspector() {}
 }
 protocol ViewType: SubViewType {
 	associatedtype K: RawRepresentable where K.RawValue == String
@@ -82,8 +85,7 @@ class Document: NSDocument {
 	@IBOutlet var editPanel: NSPanel!
 	@objc
 	func editMode(_ menuItem: NSMenuItem) {
-		menuItem.state = menuItem.state == .off ? .on : .off
-		contents?.isEditing = menuItem.state == .on
+		editPanel.makeKeyAndOrderFront(self)
 	}
 	@objc
 	func reloadWebviews(_ sender: Any) {
@@ -150,14 +152,18 @@ class Document: NSDocument {
 		outlineView.reloadData()
     }
 	
+	private var previouslySelectedItem: SubView?
 	@IBOutlet var inspectorView: NSView!
 	@objc
 	private func outlineViewDidSelect(_ object: Any) {
 		let selected = outlineView.selectedRow
 		self.inspectorView.subviews.forEach { $0.removeFromSuperview() }
+		previouslySelectedItem?.didDeselectViewInInspector()
 		guard let item = outlineView.item(atRow: selected) as? SubView,
 			let inspectorView = item.inspectorView else { return }
 		self.inspectorView.addContainedSubview(inspectorView)
+		previouslySelectedItem = item
+		item.didSelectViewInInspector()
 	}
 }
 

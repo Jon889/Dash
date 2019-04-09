@@ -86,12 +86,6 @@ class WebPageView: View {
 		return [ .url: url.absoluteString, .zoom: zoomLevel ]
 	}
 	
-	var isEditing: Bool = false {
-		didSet {
-			editToolbar.isHidden = !isEditing
-		}
-	}
-	
 	lazy var inspectorView: NSView? = {
 		let iv = InspectorView()
 		let av = TextAttributeView(label: "URL")

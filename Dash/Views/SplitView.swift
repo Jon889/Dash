@@ -80,8 +80,6 @@ class SplitView: View, NSSplitViewDelegate {
 	var isEditing: Bool = false {
 		didSet {
 			sv.dividerStyle = isEditing ? .thick : .thin
-			left.isEditing = isEditing
-			right.isEditing = isEditing
 		}
 	}
 	
@@ -96,4 +94,12 @@ class SplitView: View, NSSplitViewDelegate {
 		iv.addAttribute(view: av)
 		return iv
 	}()
+	
+	func didSelectViewInInspector() {
+		isEditing = true
+	}
+	
+	func didDeselectViewInInspector() {
+		isEditing = false
+	}
 }

@@ -45,6 +45,4 @@ class ColorView: View, Encodable {
 		}
 		self.init(color: color)
 	}
-	
-	var isEditing: Bool = false
 }
