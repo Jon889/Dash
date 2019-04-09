@@ -19,17 +19,24 @@ class SplitView: View, NSSplitViewDelegate {
     private var left: SubView
     private var right: SubView
 	private let sv: NSSplitView
-	private var splitPosition: CGFloat
+	@objc dynamic
+	private var splitPosition: CGFloat {
+		didSet {
+			undoManager?.registerUndo(withTarget: self) { $0.splitPosition = oldValue }
+			needsLayout = true
+		}
+	}
+	var observer: Any?
 	init(isVertical: Bool, left: SubView, right: SubView, splitPosition: CGFloat) {
 		self.splitPosition = splitPosition
         sv = NSSplitView()
+	
 		
         sv.isVertical = isVertical
         sv.setValue(NSColor.black, forKey: "dividerColor")
         sv.addArrangedSubview(left)
         sv.addArrangedSubview(right)
 		sv.dividerStyle = .thin
-		
         self.isVertical = isVertical
         self.left = left
         self.right = right
@@ -37,6 +44,7 @@ class SplitView: View, NSSplitViewDelegate {
 		sv.delegate = self
         addContainedSubview(sv)
     }
+
 	
 	func splitView(_ splitView: NSSplitView, constrainSplitPosition proposedPosition: CGFloat, ofSubviewAt dividerIndex: Int) -> CGFloat {
 		if !isEditing {
@@ -76,4 +84,16 @@ class SplitView: View, NSSplitViewDelegate {
 			right.isEditing = isEditing
 		}
 	}
+	
+	var children: [SubView] {
+		return [left, right]
+	}
+	
+	lazy var inspectorView: NSView? = {
+		let iv = InspectorView()
+		let av = TextAttributeView(label: "Split Position")
+		av.textField.bind(.value, to: self, withKeyPath: "splitPosition", options: nil)
+		iv.addAttribute(view: av)
+		return iv
+	}()
 }

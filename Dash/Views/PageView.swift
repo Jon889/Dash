@@ -19,9 +19,23 @@ class PageView: View {
     private let pageCount: Int
     private let scrollView: NSScrollView
     private var timer: Timer?
-    
-    private let timeOnEachPage: TimeInterval
-    private let animationDuration: TimeInterval
+	
+	@objc dynamic
+	private var timeOnEachPage: TimeInterval {
+		didSet {
+			undoManager?.registerUndo(withTarget: self) { $0.timeOnEachPage = oldValue }
+			stopAutoScroll()
+			startAutoScroll()
+		}
+	}
+	@objc dynamic
+	private var animationDuration: TimeInterval {
+		didSet {
+			undoManager?.registerUndo(withTarget: self) { $0.animationDuration = oldValue }
+			stopAutoScroll()
+			startAutoScroll()
+		}
+	}
     private let pages: [SubView]
     
     init(pages: [SubView], timeOnEachPage: TimeInterval, animationDuration: TimeInterval) {
@@ -56,14 +70,14 @@ class PageView: View {
     
     override func viewDidMoveToSuperview() {
         super.viewDidMoveToSuperview()
-        startAutoScroll(timeOnEachPage: timeOnEachPage, animationDuration: animationDuration)
+        startAutoScroll()
     }
     
-    func startAutoScroll(timeOnEachPage: TimeInterval, animationDuration: TimeInterval) {
+    func startAutoScroll() {
         timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(timeOnEachPage + animationDuration), repeats: true) { _ in
 			if self.pageCount == 0 { return }
             let nextPage = (self.currentPage + 1) % self.pageCount
-            self.moveToPage(at: nextPage, animationDuration: animationDuration)
+			self.moveToPage(at: nextPage, animationDuration: self.animationDuration)
         }
     }
     
@@ -107,6 +121,22 @@ class PageView: View {
 			pages.forEach { $0.isEditing = isEditing }
 		}
 	}
+	
+	var children: [SubView] {
+		return pages
+	}
+	
+	lazy var inspectorView: NSView? = {
+		let iv = InspectorView()
+		let av = TextAttributeView(label: "Time On Each Page")
+		av.textField.bind(.value, to: self, withKeyPath: "timeOnEachPage", options: nil)
+		iv.addAttribute(view: av)
+		
+		let av2 = TextAttributeView(label: "Animation Duration")
+		av2.textField.bind(.value, to: self, withKeyPath: "animationDuration", options: nil)
+		iv.addAttribute(view: av2)
+		return iv
+	}()
     
 }
 

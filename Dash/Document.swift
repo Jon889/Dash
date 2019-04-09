@@ -9,46 +9,7 @@
 import Cocoa
 import WebKit
 
-class ColorView: View, Encodable {
-	static var type: String = "Color"
-	
-    var color: NSColor
-	
-	required convenience init() {
-		self.init(color: .red)
-	}
-    
-    init(color: NSColor) {
-        self.color = color
-        super.init(frame: .zero)
-    }
-	enum Keys: String {
-		case color
-	}
-    required init?(coder decoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
-        color.setFill()
-        dirtyRect.fill()
-    }
-    
-    var dictionary: DictionaryBox<Keys> {
-        return [ .color : color.hexString ]
-    }
-	
-	required convenience init(from dictionary: DictionaryBox<Keys>) throws {
-		let colorString: String = try dictionary(.color)
-		guard let color = NSColor.fromHexString(hex: colorString, alpha: 1) else {
-			throw InvalidValueError(key: "color", message: "Unable to create color from string \(colorString)")
-		}
-		self.init(color: color)
-	}
-	
-	var isEditing: Bool = false
-}
+
 let viewTypes: [SubView.Type] = [SplitView.self, PageView.self, WebPageView.self, ColorView.self, PlaceholderView.self]
 func viewFrom(dictionary: [String: Any]) throws -> SubView {
     guard let type = dictionary["type"] as? String else {
@@ -63,59 +24,6 @@ func viewFrom(dictionary: [String: Any]) throws -> SubView {
 	throw InvalidValueError(key: "type", message: "Couldn't create view from type \(type)")
 }
 
-protocol DictionaryProvider {
-	var dictionary: [String: Any] { get }
-}
-
-@dynamicCallable
-class DictionaryBox<Keys: RawRepresentable>: DictionaryProvider, ExpressibleByDictionaryLiteral where Keys.RawValue == String {
-	
-	let dictionary: [String : Any]
-	
-	required init(dictionaryLiteral elements: (Keys, Any)...) {
-		self.dictionary = Dictionary(uniqueKeysWithValues: elements.map { ($0.0.rawValue, $0.1) })
-	}
-	init(dictionary: [String: Any]) {
-		self.dictionary = dictionary
-	}
-	
-	func get<T>(_ key: Keys) throws -> T {
-		guard let unTypedValue = dictionary[key.rawValue] else {
-			throw MissingKeyError(key: key.rawValue)
-		}
-		guard let value = unTypedValue as? T else {
-			throw ValueIncorrectTypeError(key: key.rawValue, expectedType: String(describing: T.self), actualType: String(describing: type(of: unTypedValue)))
-		}
-		return value
-	}
-	
-	
-	// Can't use generics because https://bugs.swift.org/browse/SR-10313
-	func dynamicallyCall(withArguments args: [Keys]) throws -> String {
-		return try get(args[0])
-	}
-	
-	func dynamicallyCall(withArguments args: [Keys]) throws -> CGFloat {
-		return try get(args[0])
-	}
-	
-	func dynamicallyCall(withArguments args: [Keys]) throws -> Bool {
-		return try get(args[0])
-	}
-	
-	func dynamicallyCall(withArguments args: [Keys]) throws -> [String: Any] {
-		return try get(args[0])
-	}
-	
-	func dynamicallyCall(withArguments args: [Keys]) throws -> [[String: Any]] {
-		return try get(args[0])
-	}
-	
-	func dynamicallyCall(withArguments args: [Keys]) throws -> TimeInterval {
-		return try get(args[0])
-	}
-}
-
 typealias SubView = NSView & SubViewType
 typealias View = NSView & ViewType
 
@@ -125,6 +33,17 @@ protocol SubViewType: AnyObject {
 	init(from dictionary: [String: Any]) throws
 	init()
 	static var type: String { get }
+	var children: [SubView] { get }
+	var inspectorView: NSView? { get }
+}
+
+extension SubViewType {
+	var children: [SubView] {
+		return []
+	}
+	var inspectorView: NSView? {
+		return nil
+	}
 }
 protocol ViewType: SubViewType {
 	associatedtype K: RawRepresentable where K.RawValue == String
@@ -160,6 +79,7 @@ extension ViewType {
 	}
 }
 class Document: NSDocument {
+	@IBOutlet var editPanel: NSPanel!
 	@objc
 	func editMode(_ menuItem: NSMenuItem) {
 		menuItem.state = menuItem.state == .off ? .on : .off
@@ -188,7 +108,8 @@ class Document: NSDocument {
 
     }
 
-    override var windowNibName: NSNib.Name? {
+	@IBOutlet var outlineView: NSOutlineView!
+	override var windowNibName: NSNib.Name? {
         // Returns the nib file name of the document
         // If you need to use a subclass of NSWindowController or if your document supports multiple NSWindowControllers, you should remove this property and override -makeWindowControllers instead.
         return NSNib.Name("Document")
@@ -223,7 +144,52 @@ class Document: NSDocument {
 			windowController.window?.contentView?.addContainedSubview(contents!)
 		}
         windowController.window?.delegate = self
+		outlineView.dataSource = self
+		outlineView.target = self
+		outlineView.action = #selector(outlineViewDidSelect(_:))
+		outlineView.reloadData()
     }
+	
+	@IBOutlet var inspectorView: NSView!
+	@objc
+	private func outlineViewDidSelect(_ object: Any) {
+		let selected = outlineView.selectedRow
+		self.inspectorView.subviews.forEach { $0.removeFromSuperview() }
+		guard let item = outlineView.item(atRow: selected) as? SubView,
+			let inspectorView = item.inspectorView else { return }
+		self.inspectorView.addContainedSubview(inspectorView)
+	}
+}
+
+extension Document: NSOutlineViewDataSource {
+	
+	
+	func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
+		if let item = item as? SubView {
+			return item.children.count
+		} else {
+			return contents == nil ? 0 : 1
+		}
+	}
+	
+	func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
+		return ((item as? SubView)?.children.count ?? 0) != 0
+	}
+	
+	func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
+		if let item = item as? SubView {
+			return item.children[index]
+		} else {
+			return contents as Any
+		}
+	}
+	
+	func outlineView(_ outlineView: NSOutlineView, objectValueFor tableColumn: NSTableColumn?, byItem item: Any?) -> Any? {
+		guard let subView = item as? SubView else { return "View" }
+		return type(of: subView).type
+	}
+	
+
 }
 
 extension Document: NSWindowDelegate {

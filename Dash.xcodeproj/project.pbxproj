@@ -10,12 +10,15 @@
 		AB1715E8222DDD52004F4068 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1715E7222DDD52004F4068 /* AppDelegate.swift */; };
 		AB1715EA222DDD52004F4068 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1715E9222DDD52004F4068 /* Document.swift */; };
 		AB1715ED222DDD52004F4068 /* Document.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB1715EB222DDD52004F4068 /* Document.xib */; };
-		AB1715EF222DDD54004F4068 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB1715EE222DDD54004F4068 /* Assets.xcassets */; };
 		AB1715F2222DDD54004F4068 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB1715F0222DDD54004F4068 /* MainMenu.xib */; };
 		AB1715FE222DDD54004F4068 /* DashTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1715FD222DDD54004F4068 /* DashTests.swift */; };
 		ABA414E522427FD1005C8493 /* PageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA414E422427FD1005C8493 /* PageView.swift */; };
 		ABA414E72243CF55005C8493 /* SplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA414E62243CF55005C8493 /* SplitView.swift */; };
-		ABDD1BDB223924060029A56D /* Explore 3x.png in Resources */ = {isa = PBXBuildFile; fileRef = ABDD1BDA223924060029A56D /* Explore 3x.png */; };
+		ABAAA866225C0E2700E2C945 /* WebPageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABAAA865225C0E2700E2C945 /* WebPageView.xib */; };
+		ABAAA868225C178200E2C945 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAAA867225C178200E2C945 /* Extensions.swift */; };
+		ABAAA86A225C21CD00E2C945 /* DictionaryBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAAA869225C21CD00E2C945 /* DictionaryBox.swift */; };
+		ABAAA86C225C220600E2C945 /* ColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAAA86B225C220600E2C945 /* ColorView.swift */; };
+		ABAAA871225CCF2000E2C945 /* Inspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAAA870225CCF2000E2C945 /* Inspector.swift */; };
 		ABDD1BDD22392F550029A56D /* DashFileWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDD1BDC22392F550029A56D /* DashFileWrapper.swift */; };
 		ABDD1BDF223936DF0029A56D /* DashWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDD1BDE223936DF0029A56D /* DashWindowController.swift */; };
 		ABDD1BE122394BD10029A56D /* WebPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDD1BE022394BD10029A56D /* WebPageView.swift */; };
@@ -37,7 +40,6 @@
 		AB1715E7222DDD52004F4068 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AB1715E9222DDD52004F4068 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		AB1715EC222DDD52004F4068 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Document.xib; sourceTree = "<group>"; };
-		AB1715EE222DDD54004F4068 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AB1715F1222DDD54004F4068 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		AB1715F3222DDD54004F4068 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AB1715F4222DDD54004F4068 /* Dash.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Dash.entitlements; sourceTree = "<group>"; };
@@ -46,7 +48,11 @@
 		AB1715FF222DDD54004F4068 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ABA414E422427FD1005C8493 /* PageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageView.swift; sourceTree = "<group>"; };
 		ABA414E62243CF55005C8493 /* SplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitView.swift; sourceTree = "<group>"; };
-		ABDD1BDA223924060029A56D /* Explore 3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Explore 3x.png"; sourceTree = "<group>"; };
+		ABAAA865225C0E2700E2C945 /* WebPageView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebPageView.xib; sourceTree = "<group>"; };
+		ABAAA867225C178200E2C945 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		ABAAA869225C21CD00E2C945 /* DictionaryBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryBox.swift; sourceTree = "<group>"; };
+		ABAAA86B225C220600E2C945 /* ColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorView.swift; sourceTree = "<group>"; };
+		ABAAA870225CCF2000E2C945 /* Inspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inspector.swift; sourceTree = "<group>"; };
 		ABDD1BDC22392F550029A56D /* DashFileWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashFileWrapper.swift; sourceTree = "<group>"; };
 		ABDD1BDE223936DF0029A56D /* DashWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashWindowController.swift; sourceTree = "<group>"; };
 		ABDD1BE022394BD10029A56D /* WebPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebPageView.swift; sourceTree = "<group>"; };
@@ -94,15 +100,13 @@
 			children = (
 				AB1715E7222DDD52004F4068 /* AppDelegate.swift */,
 				AB1715E9222DDD52004F4068 /* Document.swift */,
-				ABDD1BE022394BD10029A56D /* WebPageView.swift */,
-				ABA414E422427FD1005C8493 /* PageView.swift */,
-				ABA414E62243CF55005C8493 /* SplitView.swift */,
-				ABFBE2382256D39F000A9CAA /* PlaceholderView.swift */,
+				ABAAA86D225C23B900E2C945 /* Views */,
 				ABDD1BDE223936DF0029A56D /* DashWindowController.swift */,
+				ABAAA867225C178200E2C945 /* Extensions.swift */,
 				ABDD1BDC22392F550029A56D /* DashFileWrapper.swift */,
+				ABAAA869225C21CD00E2C945 /* DictionaryBox.swift */,
+				ABAAA870225CCF2000E2C945 /* Inspector.swift */,
 				AB1715EB222DDD52004F4068 /* Document.xib */,
-				AB1715EE222DDD54004F4068 /* Assets.xcassets */,
-				ABDD1BDA223924060029A56D /* Explore 3x.png */,
 				AB1715F0222DDD54004F4068 /* MainMenu.xib */,
 				AB1715F3222DDD54004F4068 /* Info.plist */,
 				AB1715F4222DDD54004F4068 /* Dash.entitlements */,
@@ -117,6 +121,19 @@
 				AB1715FF222DDD54004F4068 /* Info.plist */,
 			);
 			path = DashTests;
+			sourceTree = "<group>";
+		};
+		ABAAA86D225C23B900E2C945 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				ABDD1BE022394BD10029A56D /* WebPageView.swift */,
+				ABAAA865225C0E2700E2C945 /* WebPageView.xib */,
+				ABA414E422427FD1005C8493 /* PageView.swift */,
+				ABA414E62243CF55005C8493 /* SplitView.swift */,
+				ABFBE2382256D39F000A9CAA /* PlaceholderView.swift */,
+				ABAAA86B225C220600E2C945 /* ColorView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -210,10 +227,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB1715EF222DDD54004F4068 /* Assets.xcassets in Resources */,
+				ABAAA866225C0E2700E2C945 /* WebPageView.xib in Resources */,
 				AB1715ED222DDD52004F4068 /* Document.xib in Resources */,
 				AB1715F2222DDD54004F4068 /* MainMenu.xib in Resources */,
-				ABDD1BDB223924060029A56D /* Explore 3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,7 +248,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB1715EA222DDD52004F4068 /* Document.swift in Sources */,
+				ABAAA871225CCF2000E2C945 /* Inspector.swift in Sources */,
+				ABAAA868225C178200E2C945 /* Extensions.swift in Sources */,
+				ABAAA86C225C220600E2C945 /* ColorView.swift in Sources */,
 				ABA414E72243CF55005C8493 /* SplitView.swift in Sources */,
+				ABAAA86A225C21CD00E2C945 /* DictionaryBox.swift in Sources */,
 				ABA414E522427FD1005C8493 /* PageView.swift in Sources */,
 				ABDD1BDF223936DF0029A56D /* DashWindowController.swift in Sources */,
 				ABDD1BE122394BD10029A56D /* WebPageView.swift in Sources */,

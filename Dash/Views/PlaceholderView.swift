@@ -55,7 +55,11 @@ class PlaceholderView: View {
 		case nothing
 	}
 	
-	var isEditing: Bool = false
+	var isEditing: Bool = false {
+		didSet {
+			subview?.isEditing = isEditing
+		}
+	}
 	
 	static var type: String = "PlaceholderView"
 	
